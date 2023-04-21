@@ -70,6 +70,7 @@ public class CommitStatusUpdater {
         }
 
         final String buildUrl = getBuildUrl(build);
+        LOGGER.log("** buildUrl", buildUrl)
         if (gitLabBranchBuilds != null) {
             for (final GitLabBranchBuild gitLabBranchBuild : gitLabBranchBuilds) {
                 try {
@@ -86,9 +87,11 @@ public class CommitStatusUpdater {
                     if (gitLabBranchBuild.getName() != null) {
                         current_build_name = gitLabBranchBuild.getName();
                     }
+                    LOGGER.log("** current_build_name", current_build_name)
+                        
+                    LOGGER.log("** existsCommit", existsCommit(current_client, gitLabBranchBuild.getProjectId(), gitLabBranchBuild.getRevisionHash()))
 
-                    if (existsCommit(
-                            current_client, gitLabBranchBuild.getProjectId(), gitLabBranchBuild.getRevisionHash())) {
+                    if (existsCommit(current_client, gitLabBranchBuild.getProjectId(), gitLabBranchBuild.getRevisionHash())) {
                         LOGGER.log(
                                 Level.INFO,
                                 String.format("Updating build '%s' to '%s'", gitLabBranchBuild.getProjectId(), state));
